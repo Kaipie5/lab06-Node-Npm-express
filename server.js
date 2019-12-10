@@ -50,15 +50,9 @@ function createResponseObjLocation(searchQuery) {
         }
     }
     console.log("FAILED TO FIND CITY")
-    return {
-        "search_query": "AHHHH",
-        "formatted_query": "EVERYTHING IS BROKEN",
-        "latitude": "PLEASE SEND HELP",
-        "longitude": "PLS"
-    }
-    // const geoDataResults = geoData.results[0];
+    
+    return errorResponse();
 
-    // const locationObj = new Location(city, geoDataResults);
     // const locationObj = {
     //   "search_query": city,
     //   "formatted_query": geoDataResults.formatted_address,
@@ -80,9 +74,7 @@ app.get('/weather', (request, response) => {
   ...
 ]*/
     console.log(" Weather HELLOOOOOO")
-    let city = request.query.data;
 
-    console.log(city);
     let responseObject = createResponseObjWeather();
     
     console.log(responseObject);
@@ -94,54 +86,20 @@ app.get('/weather', (request, response) => {
 
 function createResponseObjWeather() {
     const weatherData = require('./data/darksky.json');
-    // for (let i = 0; i < weatherData.results.length; i++) {
-        // if (weatherData.results[i].latitutde === searchQuery.toLowerCase()) {
+
     let weatherObjList = []
     for (let i = 0; i < weatherData.daily.data.length; i++) {
         weatherObjList.push(new Weather(weatherData.daily.data[i]));
     }
-    
-
     return weatherObjList
-        //}
-    // }
-    // console.log("FAILED TO FIND WEATHER")
-    // return {
-    //     result: [
-    //         {
-    //             "forecast": "Partly cloudy until afternoon.",
-    //             "time": "Mon Jan 01 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 02 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 03 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 04 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 05 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 06 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 07 2001"
-    //           },
-    //           {
-    //             "forecast": "Mostly cloudy in the morning.",
-    //             "time": "Tue Jan 08 2001"
-    //           },
-    //     ] 
-    // }
+
+}
+
+function errorResponse() {
+    return {
+        "status": 500,
+        "responseText": "Sorry something went wrong"
+    }
 }
 
 app.listen(PORT, () => {
