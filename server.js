@@ -32,14 +32,14 @@ app.get('/location', (request, response) => {
     let city = request.query.data;
 
     console.log(city);
-    let responseObject = createResponseObj(city);
+    let responseObject = createResponseObjLocation(city);
     
     console.log(responseObject);
 
     response.send(responseObject);
 })
 
-function createResponseObj(searchQuery) {
+function createResponseObjLocation(searchQuery) {
     const geoData = require('./data/geo.json');
     for (let i = 0; i < geoData.results.length; i++) {
         if (geoData.results[i].address_components[0].long_name.toLowerCase() === searchQuery.toLowerCase()) {
@@ -67,6 +67,83 @@ function createResponseObj(searchQuery) {
     // }
 }
 
+app.get('/weather', (request, response) => {
+    /*[
+  {
+    "forecast": "Partly cloudy until afternoon.",
+    "time": "Mon Jan 01 2001"
+  },
+  {
+    "forecast": "Mostly cloudy in the morning.",
+    "time": "Tue Jan 02 2001"
+  },
+  ...
+]*/
+    console.log(" Weather HELLOOOOOO")
+    let city = request.query.data;
+
+    console.log(city);
+    let responseObject = createResponseObjWeather();
+    
+    console.log(responseObject);
+
+    response.send(responseObject);
+    
+
+})
+
+function createResponseObjWeather() {
+    const weatherData = require('./data/darksky.json');
+    // for (let i = 0; i < weatherData.results.length; i++) {
+        // if (weatherData.results[i].latitutde === searchQuery.toLowerCase()) {
+    let weatherObjList = []
+    for (let i = 0; i < weatherData.daily.data.length; i++) {
+        weatherObjList.push(new Weather(weatherData.daily.data[i]));
+    }
+    
+
+    return weatherObjList
+        //}
+    // }
+    // console.log("FAILED TO FIND WEATHER")
+    // return {
+    //     result: [
+    //         {
+    //             "forecast": "Partly cloudy until afternoon.",
+    //             "time": "Mon Jan 01 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 02 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 03 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 04 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 05 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 06 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 07 2001"
+    //           },
+    //           {
+    //             "forecast": "Mostly cloudy in the morning.",
+    //             "time": "Tue Jan 08 2001"
+    //           },
+    //     ] 
+    // }
+}
+
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`);
 })
@@ -76,4 +153,10 @@ function Location(city, geoDataResults){
     this.formatted_query = geoDataResults.formatted_address;
     this.latitude = geoDataResults.geometry.location.lat;
     this.longitude = geoDataResults.geometry.location.lng;
+  }
+
+  function Weather(darkSkyDataResults){
+    this.forecast = darkSkyDataResults.summary;
+    let date = new Date(darkSkyDataResults.time)
+    this.time = date.toString();
   }
