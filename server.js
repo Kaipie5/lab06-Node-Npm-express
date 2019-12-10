@@ -10,6 +10,23 @@ app.use(express.static('./public'));
 
 const port = process.env.PORT;
 
+app.get('/', (request, response) => {
+    response.send("Hello from the back side");
+    // let city = request.query.data;
+
+    // console.log(city);
+    // let locationObj = searchLatToLong(city);
+    // responseObj = {
+    //     "search_query": city,
+    //     "formatted_query": city,
+    //     "latitude": locationObj.latitude,
+    //     "longitude": locationObj.longitude
+    // }
+    // console.log(responseObj);
+
+    // response.send(responseObj);
+})
+
 app.get('/location', (request, response) => {
     let city = request.query.data;
 
