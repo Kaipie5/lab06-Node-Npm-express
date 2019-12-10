@@ -44,3 +44,13 @@ Start time: 11:15am
 Finish time: 11:50am
 
 Actual time needed to complete: 35 minutes
+
+Feature 3: Error Handling 
+
+Estimate of time needed to complete: 15 minutes
+
+Start time: 12:30pm
+
+Finish time: 12:45pm
+
+Actual time needed to complete: 15 minutes
