@@ -35,8 +35,13 @@ app.get('/location', (request, response) => {
     let responseObject = createResponseObjLocation(city);
     
     console.log(responseObject);
+    if (responseObject.status === errorResponse().status) {
+        response.status(500).send(responseObject)
+    } else {
+        response.send(responseObject);
+    }
 
-    response.send(responseObject);
+    
 })
 
 function createResponseObjLocation(searchQuery) {
@@ -115,6 +120,6 @@ function Location(city, geoDataResults){
 
   function Weather(darkSkyDataResults){
     this.forecast = darkSkyDataResults.summary;
-    let date = new Date(darkSkyDataResults.time)
+    let date = new Date(darkSkyDataResults.time * 1000)
     this.time = date.toString();
   }
